@@ -1,0 +1,65 @@
+<div id="ball"></div>
+<style>
+#ball {
+    position: absolute;
+    background-color: blue;
+    border-radius: 20px;
+}
+</style>
+<script>
+  // נגדיר את המהירות בפיקסלים לשנייה
+const speed = 300;
+let xSpeed = speed;
+let ySpeed = speed;
+
+const ball = document.getElementById('ball');
+// נגדיר את הגודל של הכדור
+const size = 20;
+ball.style.width = size + 'px';
+ball.style.height = size + 'px';
+
+// Math.random() נתחיל ממקום אקראי באמצעות
+let left = Math.random() * window.innerWidth;
+let top = Math.random() * window.innerHeight;
+
+let lastTime = Date.now();
+
+function moveBall() {
+    // נראה כמה זמן עבר מהריצה האחרונה של הפונקציה
+    const now = Date.now();
+    const miliSecPassed = now - lastTime;
+    const secondsPassed = miliSecPassed / 1000;
+    // נעדכן את המיקום האופקי של הכדור
+    left += xSpeed * secondsPassed;
+    const maxLeft = window.innerWidth - size;
+    // אם הגענו לקצה, נהפוך כיוון
+    if (left < 0 || left > maxLeft) {
+        if (left < 0) {
+            left = 0;
+        } else {
+            left = maxLeft;
+        }
+        xSpeed *= -1;
+    }
+    // נעשה אותו דבר עם המיקום האנכי
+    top += ySpeed * secondsPassed;
+    const maxTop = window.innerHeight - size;
+    if (top < 0 || top > maxTop) {
+        if (top < 0) {
+            top = 0;
+        } else {
+            top = maxTop;
+        }
+        ySpeed *= -1;
+    }
+    ball.style.left = left + 'px';
+    ball.style.top = top + 'px';
+    
+    // נזמין את הריצה הבאה של הפונקציה
+    lastTime = now;
+    requestAnimationFrame(moveBall);
+}
+
+// נתחיל את התהליך
+moveBall();
+</script>
